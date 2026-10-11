@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="إنجاز — مساحة عربية بسيطة لتنظيم المهام والمشاريع ومتابعة التقدم.">
+  <title>إنجاز | إدارة المهام والمشاريع</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="إنجاز الصفحة الرئيسية">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4.2 4.2L19 6.5"/></svg></span>
+        <span><strong>إنجاز</strong><small>مساحة عملك الذكية</small></span>
+      </a>
+      <div class="workspace"><span class="workspace-icon">م</span><span><b>مساحة عملي</b><small>مساحة شخصية</small></span><span class="chevron">⌄</span></div>
+      <div class="nav-label">القائمة الرئيسية</div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">▦</span> نظرة عامة</button>
+        <button class="nav-item" data-view="tasks"><span class="nav-icon">☷</span> كل المهام <span class="nav-count" id="navTaskCount">0</span></button>
+        <button class="nav-item" data-filter="today"><span class="nav-icon">◷</span> مهام اليوم</button>
+        <button class="nav-item" data-filter="upcoming"><span class="nav-icon">▣</span> القادمة</button>
+        <button class="nav-item" data-filter="completed"><span class="nav-icon">✓</span> المكتملة</button>
+      </nav>
+      <div class="nav-label projects-label">مساحة المشاريع <button id="addProjectMini" title="إضافة مشروع">＋</button></div>
+      <div id="projectNav" class="project-nav"></div>
+      <div class="sidebar-bottom">
+        <div class="upgrade-card"><span class="sparkle">✦</span><b>كل خطوة تصنع فرقًا</b><p>نظّم يومك واحتفل بإنجازاتك الصغيرة.</p><div class="mini-progress"><span></span></div><small>استمر، أنت تتقدم!</small></div>
+        <button class="profile"><span class="avatar">أ</span><span><b>أحمد محمد</b><small>حساب شخصي</small></span><span class="dots">•••</span></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="فتح القائمة">☰</button>
+        <div class="breadcrumb"><span>مساحة عملي</span><span class="crumb-sep">/</span><b id="breadcrumbTitle">نظرة عامة</b></div>
+        <div class="top-actions">
+          <label class="search-box"><span>⌕</span><input type="search" id="searchInput" placeholder="ابحث عن مهمة..." aria-label="ابحث عن مهمة"><kbd>⌘ K</kbd></label>
+          <button class="icon-button" id="themeToggle" title="تبديل المظهر" aria-label="تبديل المظهر">☼</button>
+          <button class="icon-button notification" title="الإشعارات" aria-label="الإشعارات">♧<i></i></button>
+          <span class="top-avatar">أ</span>
+        </div>
+      </header>
+
+      <section class="page-content">
+        <div class="welcome-row">
+          <div><p class="eyebrow" id="currentDate">يوم جديد، فرصة جديدة</p><h1 id="pageTitle">صباح الإنجاز، أحمد <span class="wave">✦</span></h1><p class="subtitle" id="pageSubtitle">إليك ملخص ما يحدث في مساحة عملك اليوم.</p></div>
+          <button class="primary-button" id="addTaskBtn"><span>＋</span> مهمة جديدة</button>
+        </div>
+
+        <section class="stats-grid" aria-label="إحصائيات المهام">
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon purple">☷</span><span class="stat-trend">إجمالي</span></div><div class="stat-number" id="totalStat">0</div><div class="stat-label">إجمالي المهام</div><div class="stat-foot"><span class="stat-dot purple-dot"></span> جميع المهام في مساحتك</div></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon blue">◷</span><span class="stat-trend">اليوم</span></div><div class="stat-number" id="todayStat">0</div><div class="stat-label">مهام اليوم</div><div class="stat-foot"><span class="stat-dot blue-dot"></span> مهام تحتاج إلى انتباهك</div></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon green">✓</span><span class="stat-trend positive">إنجازك</span></div><div class="stat-number" id="completedStat">0</div><div class="stat-label">مهام مكتملة</div><div class="stat-foot"><span class="stat-dot green-dot"></span> خطوة أخرى إلى الأمام</div></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon orange">⚑</span><span class="stat-trend warning">متابعة</span></div><div class="stat-number" id="overdueStat">0</div><div class="stat-label">مهام متأخرة</div><div class="stat-foot"><span class="stat-dot orange-dot"></span> راجع المواعيد النهائية</div></article>
+        </section>
+
+        <section class="dashboard-grid">
+          <article class="panel task-panel">
+            <div class="panel-heading"><div><h2 id="taskSectionTitle">مهامك</h2><p>رتّب أولوياتك وابدأ بالأهم</p></div><button class="text-button" id="viewAllBtn">عرض الكل <span>←</span></button></div>
+            <div class="task-toolbar"><div class="filter-tabs" role="tablist"><button class="filter-tab active" data-task-filter="all">الكل</button><button class="filter-tab" data-task-filter="active">قيد التنفيذ</button><button class="filter-tab" data-task-filter="completed">مكتملة</button></div><select id="sortSelect" aria-label="ترتيب المهام"><option value="date">الأقرب موعدًا</option><option value="priority">حسب الأولوية</option><option value="created">الأحدث أولًا</option></select></div>
+            <div id="taskList" class="task-list"></div>
+            <div id="emptyState" class="empty-state hidden"><div class="empty-illustration">✓</div><h3>لا توجد مهام هنا بعد</h3><p>أضف مهمة جديدة وابدأ أولى خطوات الإنجاز.</p><button class="primary-button small" id="emptyAddBtn">＋ إضافة مهمة</button></div>
+          </article>
+
+          <div class="right-column">
+            <article class="panel progress-panel"><div class="panel-heading"><div><h2>تقدمك هذا الأسبوع</h2><p>إنجازاتك تستحق الاحتفال</p></div><span class="heading-icon">↗</span></div><div class="progress-summary"><div><strong id="completionRate">0%</strong><small>نسبة الإنجاز</small></div><div class="progress-ring" id="progressRing"><span id="ringValue">0%</span></div></div><div class="progress-track"><span id="progressBar"></span></div><div class="progress-legend"><span><i class="legend-dot done"></i> مكتملة <b id="progressDone">0</b></span><span><i class="legend-dot remaining"></i> متبقية <b id="progressRemaining">0</b></span></div></article>
+            <article class="panel projects-panel"><div class="panel-heading"><div><h2>مشاريعك</h2><p>تابع التقدم في كل مشروع</p></div><button class="round-add" id="addProjectBtn" aria-label="إضافة مشروع">＋</button></div><div id="projectList" class="project-list"></div><button class="add-project-link" id="addProjectLink">＋ إنشاء مشروع جديد</button></article>
+            <article class="quote-card"><span class="quote-mark">“</span><p>النجاح هو مجموع الجهود الصغيرة التي تتكرر يومًا بعد يوم.</p><span>— تذكيرك اليومي</span><div class="quote-decoration">✳</div></article>
+          </div>
+        </section>
+        <footer class="footer"><span>© 2026 إنجاز — صُمّم لتنظيم يومك.</span><span><i class="online-dot"></i> كل بياناتك محفوظة على هذا الجهاز</span></footer>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="taskDialog" class="modal">
+    <form id="taskForm" method="dialog">
+      <div class="modal-heading"><div><span class="modal-kicker">خطوة جديدة</span><h2 id="taskModalTitle">إضافة مهمة جديدة</h2></div><button type="button" class="close-modal" data-close="taskDialog" aria-label="إغلاق">×</button></div>
+      <input type="hidden" id="taskId">
+      <label class="field-label" for="taskTitle">اسم المهمة <span>*</span></label><input class="field-input" id="taskTitle" required maxlength="100" placeholder="مثال: تجهيز عرض المشروع">
+      <label class="field-label" for="taskDescription">وصف مختصر</label><textarea class="field-input" id="taskDescription" rows="3" maxlength="300" placeholder="أضف تفاصيل تساعدك على تذكّر المطلوب..."></textarea>
+      <div class="form-row"><div><label class="field-label" for="taskDue">تاريخ الاستحقاق</label><input class="field-input" id="taskDue" type="date" required></div><div><label class="field-label" for="taskPriority">الأولوية</label><select class="field-input" id="taskPriority"><option value="medium">متوسطة</option><option value="high">عالية</option><option value="low">منخفضة</option></select></div></div>
+      <div class="form-row"><div><label class="field-label" for="taskProject">المشروع</label><select class="field-input" id="taskProject"></select></div><div><label class="field-label" for="taskStatus">الحالة</label><select class="field-input" id="taskStatus"><option value="active">قيد التنفيذ</option><option value="completed">مكتملة</option></select></div></div>
+      <div class="modal-actions"><button type="button" class="secondary-button" data-close="taskDialog">إلغاء</button><button type="submit" class="primary-button">حفظ المهمة</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="projectDialog" class="modal">
+    <form id="projectForm" method="dialog">
+      <div class="modal-heading"><div><span class="modal-kicker">نظّم أفكارك</span><h2>إنشاء مشروع جديد</h2></div><button type="button" class="close-modal" data-close="projectDialog" aria-label="إغلاق">×</button></div>
+      <label class="field-label" for="projectName">اسم المشروع <span>*</span></label><input class="field-input" id="projectName" required maxlength="60" placeholder="مثال: تطوير الموقع الشخصي">
+      <label class="field-label" for="projectColor">لون المشروع</label><select class="field-input" id="projectColor"><option value="purple">بنفسجي</option><option value="blue">أزرق</option><option value="green">أخضر</option><option value="orange">برتقالي</option><option value="pink">وردي</option></select>
+      <div class="modal-actions"><button type="button" class="secondary-button" data-close="projectDialog">إلغاء</button><button type="submit" class="primary-button">إنشاء المشروع</button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
